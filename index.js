@@ -12,12 +12,20 @@ const idArray = [];
 
 function app() {
     console.log('Welcome to the Team Profile Generator!');
+    createManager();
     function createManager() {
         inquirer.prompt([
             {
                 type: 'input',
                 name: 'managerName',
                 message: "What is the team manager's name?",
+                validate: async (input) => {
+                    if (input.length < 2) {
+                        console.log(' <-- Name must have at least 2 characters');
+                        return false;
+                    }
+                    return true;
+                }
             },
             {
                 type: 'input',
@@ -28,6 +36,10 @@ function app() {
                 type: 'input',
                 name: 'email',
                 message: "What is the team manager's email?",
+                validate: async (email) => {
+                    return emailValidator.validate(email)
+                }
+        
             },
             {
                 type: 'input',
@@ -44,8 +56,17 @@ function app() {
                 )
                 teamMembers.push(manager);
                 idArray.push(data.id);
-                createTeam();
+                buildTeam();
+                inquirer.prompt([
+                    {
+                        type: 'list',
+                        name: 'anotherEmployee',
+                        message: 'Would you like to add another team member?',
+                        choices: ["Engineer", "Intern", "No thank you"]
+                    }
+                ])
             })
+
     }
     function createEngineer() {
         inquirer.prompt([
@@ -53,6 +74,13 @@ function app() {
                 type: 'input',
                 name: 'engineerName',
                 message: "What is the engineer's name?",
+                validate: async (input) => {
+                    if (input.length < 2) {
+                        console.log(' <-- Name must have at least 2 characters');
+                        return false;
+                    }
+                    return true;
+                }
             },
             {
                 type: 'input',
@@ -63,11 +91,22 @@ function app() {
                 type: 'input',
                 name: 'email',
                 message: "What is the engineer's email?",
+                validate: async (email) => {
+                    return emailValidator.validate(email)
+                }
+        
             },
             {
                 type: 'input',
                 name: 'github',
                 message: "What is the engineer's GitHub username?",
+                validate: async (input) => {
+                    if (input.length < 2) {
+                        console.log(' <-- Name must have at least 2 characters');
+                        return false;
+                    }
+                    return true;
+                }
             }
         ])
             .then((data) => {
@@ -79,7 +118,7 @@ function app() {
                 )
                 teamMembers.push(engineer);
                 idArray.push(data.id);
-                createTeam();
+                buildTeam();
             })
     }
     function createIntern() {
@@ -88,6 +127,13 @@ function app() {
                 type: 'input',
                 name: 'internName',
                 message: "What is the intern's name?",
+                validate: async (input) => {
+                    if (input.length < 2) {
+                        console.log(' <-- Name must have at least 2 characters');
+                        return false;
+                    }
+                    return true;
+                }
             },
             {
                 type: 'input',
@@ -98,10 +144,14 @@ function app() {
                 type: 'input',
                 name: 'email',
                 message: "What is the intern's email?",
+                validate: async (email) => {
+                    return emailValidator.validate(email)
+                }
+        
             },
             {
                 type: 'input',
-                name: 'officeNumber',
+                name: 'school',
                 message: "What school does this intern attend?",
             }
         ])
@@ -114,14 +164,13 @@ function app() {
                 )
                 teamMembers.push(intern);
                 idArray.push(data.id);
-                createTeam();
+                buildTeam();
             })
-        function buildTeam() {
-            if (!fs.existsSync(DIST_DIR)) {
-                fs.mkdirSync(DIST_DIR)
-            } fs.writeFileSync(distPath, render(teamMembers), 'utf-8');
-        }
-        createManager();
     }
+}
+function buildTeam() {
+    if (!fs.existsSync(DIST_DIR)) {
+        fs.mkdirSync(DIST_DIR)
+    } fs.writeFileSync(distPath, render(teamMembers), 'utf-8');
 }
 app();
