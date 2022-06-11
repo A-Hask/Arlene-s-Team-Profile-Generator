@@ -1,5 +1,6 @@
 const inquirer = require('inquirer');
 const fs = require('fs');
+const emailValidator = require('email-validator');
 const Manager = require('./lib/Manager');
 const Engineer = require('./lib/Engineer');
 const Intern = require('./lib/Intern');
@@ -39,7 +40,7 @@ function app() {
                 validate: async (email) => {
                     return emailValidator.validate(email)
                 }
-        
+
             },
             {
                 type: 'input',
@@ -63,10 +64,8 @@ function app() {
                         name: 'anotherEmployee',
                         message: 'Would you like to add another team member?',
                         choices: ["Engineer", "Intern", "No thank you"]
-                    }
-                ])
-            })
-
+                    }])
+            });
     }
     function createEngineer() {
         inquirer.prompt([
@@ -94,7 +93,7 @@ function app() {
                 validate: async (email) => {
                     return emailValidator.validate(email)
                 }
-        
+
             },
             {
                 type: 'input',
@@ -147,7 +146,7 @@ function app() {
                 validate: async (email) => {
                     return emailValidator.validate(email)
                 }
-        
+
             },
             {
                 type: 'input',

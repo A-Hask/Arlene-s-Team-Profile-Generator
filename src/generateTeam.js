@@ -1,16 +1,20 @@
 function generateTeam(teamMembers) {
     function generateManager(manager) {
-        return
-        //html code for div
-        `<div class="managerCard">${manager.getName()}<div>
+        return `
+        <div class="manager-card">${manager.getName()}<div>
         `
     }
     function generateEngineer(engineer) {
-
+        return `
+        <div class="engineer-card">${engineer.getName()}<div>
+        `
     }
     function generateIntern(intern) {
-
+        return `
+        <div class="intern-card">${intern.getName()}<div>
+        `
     }
+
     const html = [];
     html.push(teamMembers.filter(employee => employee.getRole() === 'Manager'))
         .map(manager => generateManager(manager));
@@ -22,6 +26,19 @@ function generateTeam(teamMembers) {
         .join('');
     return html.join('');
 }
+// let html = '';
+
+//     if (teamMembers === Manager) {
+//         html = html + generateManager(teamMembers);
+
+//     } else if (teamMembers === Engineer) {
+//         html = html + generateEngineer(teamMembers);
+//     } else {
+//         html = html + generateIntern(teamMembers);
+//     }
+
+
+generateTeam();
 
 module.exports = teamMembers => {
     return `<!DOCTYPE html>
@@ -33,13 +50,11 @@ module.exports = teamMembers => {
         <title>My Team Generator</title>
     </head>
     <body>
-    
     <header>
-
+        Team Member Profiles
     </header>
-    <div class = "teamCard"> ${generateTeam(teamMembers)} </div>
-  
+    <section class = "teamCard"> ${html} 
+    </section>  
     </body>`
 };
-
 
