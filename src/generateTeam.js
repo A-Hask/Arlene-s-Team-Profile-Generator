@@ -2,7 +2,7 @@ function generateTeam(teamMembers) {
     function generateManager(manager) {
         return
         //html code for div
-        `<div class= >${manager.getName()}<div>
+        `<div class="managerCard">${manager.getName()}<div>
         `
     }
     function generateEngineer(engineer) {
@@ -37,7 +37,7 @@ module.exports = teamMembers => {
     <header>
 
     </header>
-    <div> ${generateTeam(teamMembers)} </div>
+    <div class = "teamCard"> ${generateTeam(teamMembers)} </div>
   
     </body>`
 };
