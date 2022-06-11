@@ -1,0 +1,127 @@
+const inquirer = require('inquirer');
+const fs = require('fs');
+const Manager = require('./lib/Manager');
+const Engineer = require('./lib/Engineer');
+const Intern = require('./lib/Intern');
+const path = require('path');
+const DIST_DIR = path.resolve(__dirname, 'dist');
+const distPath = path.join(DIST_DIR, 'index.html');
+const render = require('./src/generateTeam.js');
+const teamMembers = [];
+const idArray = [];
+
+function app() {
+    console.log('Welcome to the Team Profile Generator!');
+    function createManager() {
+        inquirer.prompt([
+            {
+                type: 'input',
+                name: 'managerName',
+                message: "What is the team manager's name?",
+            },
+            {
+                type: 'input',
+                name: 'id',
+                message: "What is the team manager's ID number?",
+            },
+            {
+                type: 'input',
+                name: 'email',
+                message: "What is the team manager's email?",
+            },
+            {
+                type: 'input',
+                name: 'officeNumber',
+                message: "What is the team manager's office number?",
+            }
+        ])
+            .then((data) => {
+                const manager = new Manager(
+                    data.managerName,
+                    data.id,
+                    data.email,
+                    data.officeNumber,
+                )
+                teamMembers.push(manager);
+                idArray.push(data.id);
+                createTeam();
+            })
+    }
+    function createEngineer() {
+        inquirer.prompt([
+            {
+                type: 'input',
+                name: 'engineerName',
+                message: "What is the engineer's name?",
+            },
+            {
+                type: 'input',
+                name: 'id',
+                message: "What is the engineer's ID number?",
+            },
+            {
+                type: 'input',
+                name: 'email',
+                message: "What is the engineer's email?",
+            },
+            {
+                type: 'input',
+                name: 'github',
+                message: "What is the engineer's GitHub username?",
+            }
+        ])
+            .then((data) => {
+                const engineer = new Engineer(
+                    data.engineerName,
+                    data.id,
+                    data.email,
+                    data.github,
+                )
+                teamMembers.push(engineer);
+                idArray.push(data.id);
+                createTeam();
+            })
+    }
+    function createIntern() {
+        inquirer.prompt([
+            {
+                type: 'input',
+                name: 'internName',
+                message: "What is the intern's name?",
+            },
+            {
+                type: 'input',
+                name: 'id',
+                message: "What is the intern's ID number?",
+            },
+            {
+                type: 'input',
+                name: 'email',
+                message: "What is the intern's email?",
+            },
+            {
+                type: 'input',
+                name: 'officeNumber',
+                message: "What school does this intern attend?",
+            }
+        ])
+            .then((data) => {
+                const intern = new Intern(
+                    data.internName,
+                    data.id,
+                    data.email,
+                    data.school,
+                )
+                teamMembers.push(intern);
+                idArray.push(data.id);
+                createTeam();
+            })
+        function buildTeam() {
+            if (!fs.existsSync(DIST_DIR)) {
+                fs.mkdirSync(DIST_DIR)
+            } fs.writeFileSync(distPath, render(teamMembers), 'utf-8');
+        }
+        createManager();
+    }
+}
+app();
